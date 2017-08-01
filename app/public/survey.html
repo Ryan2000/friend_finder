@@ -189,6 +189,8 @@
 <script type="text/javascript">
 
     // Chosen CSS
+    //styling select boxes
+    //https://harvesthq.github.io/chosen/
     var config = {
         '.chosen-select'           : {},
         '.chosen-select-deselect'  : {allow_single_deselect:true},
@@ -196,6 +198,7 @@
         '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
         '.chosen-select-width'     : {width:"95%"}
     };
+
     for (var selector in config) {
         $(selector).chosen(config[selector]);
     }
@@ -204,6 +207,7 @@
     $("#submit").on("click", function(){
 
         // Form validation
+        //looking for empty values in text boxes
         function validateForm() {
             var isValid = true;
             $('.form-control').each(function() {

@@ -49,45 +49,73 @@ module.exports = function (app) {
             var valueInt = nameScoresArray[0].scoreDifference;
             var index = 0;
             for (var i = 1; i < nameScoresArray.length; i++) {
+                //loop through nameScoresArray
                 if (nameScoresArray[i].scoreDifference < valueInt) {
+                    //grab scoreDifference property and see if it's less than valueInt which is represented by current value
                     valueInt = nameScoresArray[i].scoreDifference;
+                    //update the variable bc now we have new lowest value
                     index = i;
+                    //store current index so we can access later
                 }
             }
 
             console.log(index);
 
             var friendNameString = nameScoresArray[index].name;
+            //grab friendName
             var photoString = nameScoresArray[index].photo;
+            //grab photo
             res.json({name: friendNameString, photo: photoString});
+            //send back to browser in json format
         }
 
-        surveyData.push(req.body); //Add the response
+        surveyData.push(req.body); //Adds the response, new friend data to survey for next time
 
     });
 
 };
 
 
-function variance(array1, array2) {
-    var diffCounter = 0;
-    for (var i = 0; i < array1.length; i++) {
-        var diff = array1[i] - array2[i];
-        diff = Math.abs(diff);
-        diffCounter += diff;
+//------------------------------------matching sequence functions -------------------------------------//
+
+
+//declare function variance
+function variance(scoresArray1, scoresArray2) {
+    //pass through the scores from user1 and user2
+    var varianceCounter = 0;
+    //variable varianceCounter = to zero at this point
+    for (var i = 0; i < scoresArray1.length; i++) {
+        //loop through our info from user 1
+        var variance = scoresArray1[i] - scoresArray2[i];
+        //create variable variance and set equal to the index of user1 minus index of user2
+        variance = Math.abs(variance);
+        //variance = the absolute value of variance - can't have negatives
+        varianceCounter += variance;
+        //set varianceCounter = to varianceCounter plus variance
     }
-    return diffCounter;
+    return varianceCounter;
+    //returns total variance count between 2 arrays
 }
 
-
+//declare function findVariances and pass through scores
+//scores is from line 229 from survey.html
 function findVariances(scores) {
     var results = [];
+    //create empty array results
 
     for (var i = 0; i < surveyData.length; i++) {
+        //loop through all of surveyData which holds all of our user data
         var diff = variance(scores, surveyData[i].scores);
+        //create diff variable set it equal to variance function
+        //that contains total variance count between two arrays
         var name = surveyData[i].name;
+        //name variable set equal to index name
         var photo = surveyData[i].photo;
+        // ''
+
         results.push({name: name, scoreDifference: diff, photo: photo});
+        //push these parameters into results array
     }
     return results;
+    //returns those results.
 }
